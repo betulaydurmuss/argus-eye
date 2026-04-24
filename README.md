@@ -25,6 +25,13 @@ Argus Eye, Google dork sorgularını otomatik olarak oluşturup tarayıcıda ça
 | Admin Panelleri | cPanel, Django, Joomla, SAP, Kibana, Grafana, Outlook |
 | Hata & Debug | PHP fatal, Java stack trace, Python traceback, Spring Actuator |
 | Hassas Veriler & PII | SSH anahtarı, S3 bucket, Zoom kaydı, kamera akışı, tıbbi kayıt |
+| Dizin Listeleme | Index of, /backup, /admin, /uploads, /config, /.git |
+| Ağ Cihazları | Cisco WebVPN, FortiGate, Citrix, MikroTik, F5 BIG-IP |
+| Doküman Sızıntıları | Confidential PDF, Excel maaş listeleri, CV sızıntıları |
+| Web Servis & API | Swagger UI, GraphQL, Postman Collections, Apollo Sandbox |
+| Güvenlik Logları | Symantec logs, Firewall kayıtları, SSH login geçmişi |
+| Deployment & CI/CD | Terraform State, CircleCI, GitHub Actions, Netlify logs |
+| IoT & Endüstriyel | IP Kameralar, Yazıcı panelleri, PLC Web Server, SCADA |
 
 ---
 
