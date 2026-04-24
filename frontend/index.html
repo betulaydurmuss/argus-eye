@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="./style.css">
+    <title>Argus Eye</title>
+</head>
+<body>
+    <div id="app">
+
+        <aside class="sidebar">
+            <div class="logo-section">
+                <img src="./logo.png" alt="Argus Eye Logo" class="main-logo">
+            </div>
+
+            <div class="input-group">
+                <label for="target">Hedef Domain</label>
+                <input type="text" id="target" placeholder="example.com" autocomplete="off" spellcheck="false">
+                <p class="input-hint">Boş bırakırsanız domain olmadan arama yapılır</p>
+            </div>
+
+            <div class="input-group" style="margin-top:16px;">
+                <label for="search-input">Dork Ara</label>
+                <div class="search-wrapper">
+                    <svg class="search-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/>
+                    </svg>
+                    <input type="text" id="search-input" placeholder="Başlık veya sorgu ara..." autocomplete="off">
+                </div>
+            </div>
+
+            <div class="stats-box">
+                <div class="stat-item">
+                    <span class="stat-value" id="stat-total">0</span>
+                    <span class="stat-label">Toplam Dork</span>
+                </div>
+                <div class="stat-divider"></div>
+                <div class="stat-item">
+                    <span class="stat-value" id="stat-history">0</span>
+                    <span class="stat-label">Arama</span>
+                </div>
+                <div class="stat-divider"></div>
+                <div class="stat-item">
+                    <span class="stat-value" id="stat-cats">0</span>
+                    <span class="stat-label">Kategori</span>
+                </div>
+            </div>
+
+            <nav class="sidebar-nav">
+                <button class="nav-btn active" data-tab="library">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
+                    Kütüphane
+                </button>
+                <button class="nav-btn" data-tab="add">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 8v8M8 12h8"/></svg>
+                    Dork Ekle
+                </button>
+                <button class="nav-btn" data-tab="history">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+                    Geçmiş
+                </button>
+            </nav>
+
+            <div class="system-status">
+                <span class="status-dot"></span>
+                <span>Motor Aktif</span>
+            </div>
+        </aside>
+
+        <main class="main-content">
+
+            <div id="tab-library" class="tab-panel active">
+                <header class="content-header">
+                    <div>
+                        <h2>Dork Kütüphanesi</h2>
+                        <p class="header-sub" id="dork-count-text">Yükleniyor...</p>
+                    </div>
+                    <div class="header-actions">
+                        <select id="category-filter" class="filter-select">
+                            <option value="">Tüm Kategoriler</option>
+                        </select>
+                    </div>
+                </header>
+
+                <div id="category-tabs" class="category-tabs"></div>
+
+                <div id="dork-grid" class="dork-grid"></div>
+
+                <div id="empty-state" class="empty-state hidden">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+                    <p>Arama sonucu bulunamadı</p>
+                </div>
+            </div>
+
+            <div id="tab-add" class="tab-panel">
+                <header class="content-header">
+                    <div>
+                        <h2>Yeni Dork Ekle</h2>
+                        <p class="header-sub">Kendi dork sorgularınızı kütüphaneye ekleyin</p>
+                    </div>
+                </header>
+
+                <div class="add-form-container">
+                    <div class="form-card">
+                        <div class="form-group">
+                            <label for="new-title">Başlık <span class="required">*</span></label>
+                            <input type="text" id="new-title" placeholder="Örn: Admin Paneli" autocomplete="off">
+                        </div>
+                        <div class="form-group">
+                            <label for="new-query">Dork Sorgusu <span class="required">*</span></label>
+                            <input type="text" id="new-query" placeholder='Örn: inurl:admin filetype:php' autocomplete="off" spellcheck="false">
+                            <p class="form-hint">site:domain otomatik olarak eklenecektir</p>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="new-category">Kategori <span class="required">*</span></label>
+                                <input type="text" id="new-category" placeholder="Örn: Admin & Giriş" list="category-list" autocomplete="off">
+                                <datalist id="category-list"></datalist>
+                            </div>
+                            <div class="form-group">
+                                <label for="new-tags">Etiketler</label>
+                                <input type="text" id="new-tags" placeholder="admin,login,panel" autocomplete="off">
+                            </div>
+                        </div>
+
+                        <div class="preview-box" id="query-preview">
+                            <span class="preview-label">Önizleme:</span>
+                            <code id="preview-text">site:example.com &lt;sorgu buraya gelecek&gt;</code>
+                        </div>
+
+                        <div class="form-actions">
+                            <button class="btn-secondary" id="clear-form-btn">Temizle</button>
+                            <button class="btn-primary" id="add-dork-btn">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 5v14M5 12h14"/></svg>
+                                Dork Ekle
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="tips-card">
+                        <h4>Dork Yazım İpuçları</h4>
+                        <ul>
+                            <li><code>inurl:</code> — URL içinde arama</li>
+                            <li><code>intitle:</code> — Sayfa başlığında arama</li>
+                            <li><code>intext:</code> — Sayfa içeriğinde arama</li>
+                            <li><code>filetype:</code> — Dosya türüne göre filtrele</li>
+                            <li><code>ext:</code> — Uzantıya göre filtrele</li>
+                            <li><code>site:</code> — Otomatik eklenir</li>
+                            <li><code>"metin"</code> — Tam eşleşme</li>
+                            <li><code>OR</code> — Birden fazla seçenek</li>
+                            <li><code>-kelime</code> — Hariç tut</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <div id="tab-history" class="tab-panel">
+                <header class="content-header">
+                    <div>
+                        <h2>Arama Geçmişi</h2>
+                        <p class="header-sub" id="history-count-text">Yükleniyor...</p>
+                    </div>
+                    <div class="header-actions">
+                        <button class="btn-danger" id="clear-history-btn">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14H6L5 6"/><path d="M10 11v6M14 11v6"/><path d="M9 6V4h6v2"/></svg>
+                            Geçmişi Temizle
+                        </button>
+                    </div>
+                </header>
+
+                <div id="history-list" class="history-list"></div>
+
+                <div id="history-empty" class="empty-state hidden">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+                    <p>Henüz arama yapılmadı</p>
+                </div>
+            </div>
+
+        </main>
+    </div>
+
+    <div id="toast" class="toast hidden"></div>
+
+    <script src="./main.js" type="module"></script>
+</body>
+</html>
